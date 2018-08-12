@@ -1,5 +1,27 @@
 import Std.Base
 
+native class AWSEnv:
+    def shortRep: "AWSEnv {}"
+
+
+native class LambdaInvokeResponse:
+    def shortRep: "LambdaInvokeResponse {}"
+
+
 class AWS:
+    AWS
+    AWSVal AWSEnv
+
+    def init:
+        e = primAWSNewEnv
+        AWSVal e
+
+    def env: case self of
+        AWSVal e: e
+
     def listFunctions:
-        primListFuns
+        primAWSListFuns self.env
+
+    def invoke fName payload:
+        primAWSInvoke self.env fName payload.toBinary
+
